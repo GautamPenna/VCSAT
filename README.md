@@ -84,11 +84,3 @@ If at this stage of the code, there are likely Accession numbers that need to be
 **(10) Creating Color Coded Variability Map**
 
 To create a color-coded map of the variabilities present in the ORF chosen, run VCSAT.py on your terminal window. When prompted to, pick option (11) and go along with the code.
-
-
-
-
-
-
-
-![image](https://github.com/user-attachments/assets/fa39322f-39b0-468e-801c-a56a16ab1071)
