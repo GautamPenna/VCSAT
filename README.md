@@ -64,6 +64,10 @@ The bottom left pictures represent what should be selected with circles around t
 
 
 
+![image](https://github.com/user-attachments/assets/247f8f45-3808-4954-a410-75e3d39913ec)
+
+
+
 After running the MAFFT command, results that resemble the pictures on the upper right should be made available to view. Select Export Alignment in FASTA → Convert FASTA to .txt file. To be easy to access, it is recommended to name this in the following convention: ‘(genotype)_consensus_file.txt’. 
 
 
