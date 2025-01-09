@@ -1,11 +1,7 @@
-# VCSAT
-Python-based tool for analyzing viral genomes.
+# VCSAT - Viral Consensus Sequence Analysis Tool
+# Python-based tool for analyzing viral genomes.
 
-
-VCSAT - Viral Consensus Sequence Analysis Tool
-Gautam Penna
-
-What this tool is used for: The below documentation is to describe how to use VCSAT for Viral Genome Sequence Analysis. Genome downloads from NCBI can be downloaded in a variety of formats, but to parse through the data and determine a consensus sequence, a sequence where each nucleotide position is determined by the most common nucleotide across all data points, is difficult. This tool guides its users through a series of steps, starting from downloading the coding regions of request proteins on NCBI to graphical analysis of the sequence. 
+**What this tool is used for**: The below documentation is to describe how to use VCSAT for Viral Genome Sequence Analysis. Genome downloads from NCBI can be downloaded in a variety of formats, but to parse through the data and determine a consensus sequence, a sequence where each nucleotide position is determined by the most common nucleotide across all data points, is difficult. This tool guides its users through a series of steps, starting from downloading the coding regions of request proteins on NCBI to graphical analysis of the sequence. 
 
 **Methodology Overview**: To determine a consensus genome sequence of a viral protein, following the steps below. This section gives you an outline of steps that you can click on to learn more about the details of the step and its reasoning.
 1.	Downloading sequences from NCBI
@@ -62,11 +58,11 @@ In order to determine consensus sequence, use the following link: MAFFT Alignmen
 
 The bottom left pictures represent what should be selected with circles around the important portions in the menu options.
 
-<img width="219" alt="image" src="https://github.com/user-attachments/assets/d0aaad7e-54d7-4e28-b6d8-db0d38c484d3" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/d0aaad7e-54d7-4e28-b6d8-db0d38c484d3" />
 
-<img width="312" alt="image" src="https://github.com/user-attachments/assets/8a2a88b7-0620-4f9b-b5ae-ec35b17ec830" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/8a2a88b7-0620-4f9b-b5ae-ec35b17ec830" />
 
-<img width="312" alt="image" src="https://github.com/user-attachments/assets/48c020d0-57ac-422a-be9f-1f45c362ec4a" />
+<img width="400" alt="image" src="https://github.com/user-attachments/assets/48c020d0-57ac-422a-be9f-1f45c362ec4a" />
 
 After running the MAFFT command, results that resemble the pictures on the upper right should be made available to view. Select Export Alignment in FASTA → Convert FASTA to .txt file. To be easy to access, it is recommended to name this in the following convention: ‘(genotype)_consensus_file.txt’. 
 
