@@ -58,11 +58,9 @@ In order to determine consensus sequence, use the following link: MAFFT Alignmen
 
 The bottom left pictures represent what should be selected with circles around the important portions in the menu options.
 
-<img width="400" alt="image" src="https://github.com/user-attachments/assets/d0aaad7e-54d7-4e28-b6d8-db0d38c484d3" />
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/d0aaad7e-54d7-4e28-b6d8-db0d38c484d3" />
 
-<img width="400" alt="image" src="https://github.com/user-attachments/assets/8a2a88b7-0620-4f9b-b5ae-ec35b17ec830" />
-
-<img width="400" alt="image" src="https://github.com/user-attachments/assets/48c020d0-57ac-422a-be9f-1f45c362ec4a" />
+<img width="700" alt="image" src="https://github.com/user-attachments/assets/48c020d0-57ac-422a-be9f-1f45c362ec4a" />
 
 After running the MAFFT command, results that resemble the pictures on the upper right should be made available to view. Select Export Alignment in FASTA → Convert FASTA to .txt file. To be easy to access, it is recommended to name this in the following convention: ‘(genotype)_consensus_file.txt’. 
 
