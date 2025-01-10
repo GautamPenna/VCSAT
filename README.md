@@ -11,16 +11,12 @@ This respository contains code files and a step-by-step documentation on how to 
 1.	Downloading sequences from NCBI
 2.	Determining Protein Types and Selecting Key Protein Types
 3.	Determining Longest Protein for every Accession Number (ID)
-4.	Creating Consensus Determination Files
-5.	MAFFT Alignment
-6.	Variability Calculation
-7.	Graphical representation of Variability and Position
-8.	ORF Match File Creation
-9.	ORF Analysis
-10.	Ascension Number Deletion
-11.	Genome Modifier
-12.	Color Coded Variability Graph
-13.	Protein Sequence Votes Calculator
+4.	Creating Consensus Determination Files and MAFFT Alignment
+5.	Variability Calculation and Graphical Representation
+6.	ORF Match File Creation and ORF Analysis
+7.	Ascension Number Deletion/Genome Modifier
+8.	Color Coded Variability Graph
+9.	Protein Sequence Votes Calculator
 
 ## General Outline of Sequence Determination
 
@@ -75,15 +71,9 @@ Run VCSAT.py code on your terminal window. When prompted to, pick option **03** 
 
 An example of such a file can be found in *"`/test_files/(2)pre_deletion_files/A_genotype_max_lengths.txt`"*.
 
-Refer `/code/functions.py` and the `finding_longest_protein` function for technical code.
+## (4) Creating Files for Consensus Sequence Determination
 
-**(5) Creating Files for Consensus Sequence Determination**
-
-At this point of the program, you have one protein from each Accession number that represents the longest form of the proteins you want to analyze. To determine the consensus sequence, we will use the RIMD (Research Institute for Microbial Diseases at Osaka University) MAFFT Tool. In order to use this tool effectively, we need to place our sequences in a desired order and format. Run VCSAT.py code on your terminal window. When prompted to, pick option (4) and go along with the code. The consensus determination files will be created in your desired directory. Make sure to run this code one time for each genotype.
-
-**(6) Using MAFFT Server**
-
-In order to determine consensus sequence, use the following link: MAFFT Alignment Link. 
+After determining the longest genomic sequence of the protein to use for MAFFT alignment, it is time to determine the consensus sequence. We will be using the [MAFFT Alignment Website](https://mafft.cbrc.jp/alignment/server/index.html) for this feature. Before we do so, formatting the files in the required manner is necessary. Run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **04**. Go along with the code, the output being files for the MAFFT program. The consensus determination files will be created in your desired directory. Make sure to run this code one time for each genotype. Open the link above and follow the instructions, using the file created as the input file. 
 
 The bottom left pictures represent what should be selected with circles around the important portions in the menu options.
 
@@ -91,11 +81,17 @@ The bottom left pictures represent what should be selected with circles around t
 
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/48c020d0-57ac-422a-be9f-1f45c362ec4a" />
 
-After running the MAFFT command, results that resemble the pictures on the upper right should be made available to view. Select Export Alignment in FASTA → Convert FASTA to .txt file. To be easy to access, it is recommended to name this in the following convention: ‘(genotype)_consensus_file.txt’. 
+Select Export Alignment in FASTA → Convert FASTA to .txt file. To be easy to access, it is recommended to name this in the following convention: `(genotype)_consensus_file.txt`. 
 
-**(7) Votes Calculation and Visualization**
+An example of such a file can be found in *"`/test_files/(2)pre_deletion_files/A_Determination.txt and ACon1.txt`"*.
 
-In order to determine the variability of each position, we will use the post-MAFFT file in order to keep the lengths of all genomes the same. Run VCSAT.py code on your terminal window. When prompted to, pick option (6) and go along with the code. This will create a new file with percent variability and the different numbers of A, T, G and C for each position. In order to visualize the variability, run VCSAT.py code on your terminal window again. When prompted to, pick option (7) and go along with the code. This should create a file that represents the variability of the consensus sequence at each position of the nucleotide.
+## (5) Votes Calculation and Visualization
+
+In order to determine the variability of each position, we will use the post-MAFFT file in order to keep the lengths of all genomes the same. Run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **06**. This will create a new file with percent variability and the different numbers of A, T, G and C for each position. In order to visualize the variability, run VCSAT.py code on your terminal window again. When prompted to, type **07**. This should create a file that represents the variability of the consensus sequence at each position of the nucleotide.
+
+An example of such a file can be found in *`/test_files/(2)pre_deletion_files/Avotes.txt`*.
+
+An example of such a graphical representation can be found in *`/test_files/(4)graphs_pictures/A_pre_mod_graph.png`*.
 
 **(8) ORF Analysis**
 
