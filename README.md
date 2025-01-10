@@ -1,9 +1,9 @@
 # VCSAT - Viral Consensus Sequence Analysis Tool
 # Python-based tool for analyzing viral genomes.
 
-**What this tool is used for**: The below documentation is to describe how to use VCSAT for Viral Genome Sequence Analysis. Genome downloads from NCBI can be downloaded in a variety of formats, but to parse through the data and determine a consensus sequence, a sequence where each nucleotide position is determined by the most common nucleotide across all data points, is difficult. This tool guides its users through a series of steps, starting from downloading the coding regions of request proteins on NCBI to graphical analysis of the sequence. 
+**What this tool is used for**: The below documentation is to describe how to use VCSAT for Viral Genome Sequence Analysis. Genome downloads from NCBI can be downloaded in a variety of formats, but to parse through the data and determine a consensus sequence (each nucleotide position is determined by the most common nucleotide across all data points) is difficult. This tool guides its users through a series of steps, starting from downloading the coding regions of requested proteins on NCBI to graphical analysis of the sequence. 
 
-**Methodology Overview**: To determine a consensus genome sequence of a viral protein, following the steps below. This section gives you an outline of steps that you can click on to learn more about the details of the step and its reasoning.
+**Methodology Overview**: An overview of the steps to determine a consensus genome sequence of a viral protein is shown below.
 1.	Downloading sequences from NCBI
 2.	Determining Protein Types present in Data
 3.	Picking Protein Types
@@ -63,8 +63,6 @@ The bottom left pictures represent what should be selected with circles around t
 <img width="700" alt="image" src="https://github.com/user-attachments/assets/48c020d0-57ac-422a-be9f-1f45c362ec4a" />
 
 After running the MAFFT command, results that resemble the pictures on the upper right should be made available to view. Select Export Alignment in FASTA → Convert FASTA to .txt file. To be easy to access, it is recommended to name this in the following convention: ‘(genotype)_consensus_file.txt’. 
-
-
 
 **(7) Votes Calculation and Visualization**
 
