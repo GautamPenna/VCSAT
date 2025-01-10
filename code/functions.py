@@ -565,9 +565,71 @@ def color_coded_var_graph(votes_file, name_of_image):
     # Save the edited image
     image.save(name_of_image)
 
+def protein_votes_file (alignment_file, votes_file):
+    # Genotype specific things you need to know - length of consensus sequence, which should be the same as every sequence
 
+    complete_text = ''
+    genomes = []
+    with open(alignment_file, 'r') as file: #change name of genotype here
+        for line in file:
+            line = line.replace('\n','')
+            line = line.replace(' ','')
+            complete_text += line
+        remove_sign = 0
+        while remove_sign != -1:
+            remove_sign = complete_text.find('>')
+            complete_text = complete_text[remove_sign + 1:]
+            first_index = complete_text.find('___')
+            last_index = complete_text.find('>')
+            if last_index == -1:
+                genome_pc = complete_text[first_index + 3:] #genome post consensus
+            else: 
+                genome_pc = complete_text[first_index + 3:last_index] #genome post consensus
+            genomes.append(genome_pc)
+            #complete_text = complete_text[:first_index] + complete_text[first_index + 4:]
+            #complete_text = complete_text[last_index + 1: ]
+            #complete_text = remove_indexes(complete_text, [first_index, first_index + 1, first_index + 2, first_index + 3, last_index])
+    genomes.pop()
 
+    #print(genomes)
 
-
+    sumi = 0
+    for entry in genomes:
+        sumi += len(entry)
     
-    
+    length = int(sumi/len(genomes))
+    con_nuc = ''
+    for i in range (0, length):
+        pos_pro = []
+        for genome in genomes:
+            pos_pro.append(genome[i])
+        loop = list(set(pos_pro))
+        max_count = 0
+        con_pro = ''
+        for element in loop:
+            count = pos_pro.count(element)
+            if count > max_count:
+                con_pro = element
+                max_count = count
+        
+        con_nuc += con_pro
+
+    ### Consensus Nucleotide should be created
+
+    with open(votes_file, 'w') as file: #Change name of genotype here
+        file.write('Position,Consensus_Nucleotide,Same_Count,Diff_Count,Total_count_check,Percent_Variability')
+        file.write('\n')
+        for i in range(0,length): ## INPUT FOR LENGTH OF CONSENSUS SEQUENCE
+            same_count = 0
+            diff_count = 0
+            for entry in genomes:
+                #print(len(entry))
+                if entry[i] == con_nuc[i]:
+                    same_count += 1
+                else:
+                    diff_count += 1
+
+            percent_variability = (diff_count)/(same_count + diff_count)
+            total_count_check = same_count + diff_count
+            file.write(str(i) + ',' + con_nuc[i] + ',' + str(same_count) + ',' + str(diff_count) + ',' + str(total_count_check) + ',' + str(percent_variability*100))
+            file.write('\n')
