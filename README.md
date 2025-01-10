@@ -1,9 +1,11 @@
 # VCSAT - Viral Consensus Sequence Analysis Tool
-# Python-based tool for analyzing viral genomes.
+*Python-based tool for analyzing viral genomes*
 
-**What this tool is used for**: The below documentation is to describe how to use VCSAT for Viral Genome Sequence Analysis. Genome downloads from NCBI can be downloaded in a variety of formats, but to parse through the data and determine a consensus sequence (each nucleotide position is determined by the most common nucleotide across all data points) is difficult. This tool guides its users through a series of steps, starting from downloading the coding regions of requested proteins on NCBI to graphical analysis of the sequence. 
+This respository contains code files and a step-by-step documentation on how to use VCSAT for Viral Genome Sequence Analysis. Genome downloads from NCBI can be downloaded in a variety of formats, but to parse through the data and determine a *consensus sequence* is difficult. This tool guides its users through a series of steps, starting from downloading the coding regions of requested proteins on NCBI to graphical analysis when compared against the consensus or reference sequences. 
 
-**Methodology Overview**: An overview of the steps to determine a consensus genome sequence of a viral protein is shown below.
+> *Consensus Sequence: each nucleotide position is determined by the most common nucleotide across all data points*
+
+**Methodology Overview**:
 1.	Downloading sequences from NCBI
 2.	Determining Protein Types present in Data
 3.	Picking Protein Types
@@ -18,14 +20,30 @@
 12.	Genome Modifier
 13.	Color Coded Variability Graph
 
-**General Structure of Sequence Determination**
+## General Outline of Sequence Determination
 
 The following steps determine the variability among the consensus sequence so it can be later used in AlphaFold and other 3d protein modeling softwares to determine structural variability of a virus. The first couple steps in this process involve downloading the required genomes from NCBI and determining the proteins required for analysis. The longest protein of each ID number (Accession Number) is used for further analysis since using incomplete DNA sequences will lead to multiple ‘-’ during the MAFFT alignment process. After creating the files required by the MAFFT software, variability between the determined consensus sequence and each individual is calculated. 
 
-From here, it is important to analyze the ORF (open reading frame) of the start and stop codons. Finding ones that are in the same reading frame that also encompass the largest protein is crucial for further analysis. After determining the Accession Numbers that do not align with the ORF determined, deletion of these ID’s from the data-set and a run-through of steps 6-13 is required for accurate depiction of the protein.
+From here, it is important to analyze the ORF (open reading frame) of the start and stop codons. Finding ones that are in the same reading frame that also encompass the largest protein is crucial for further analysis. After determining the Accession Numbers that do not align with the ORF determined, deletion of these ID’s from the dataset and a run-through of steps 6-13 is required for accurate depiction of the protein.
+
+**Example Files**
+
+To 
 
 
-**(1) Downloading NCBI Viral Protein Genomes**
+## Downloading Code for Usage
+
+In order to use the code present /code file, download the respository to your personal computer. After doing so, open your terminal window and navigate to the same directory as the respository. Once reached, type the following command:
+
+```py
+
+python VCSAT.py
+
+```
+
+This should launch the main python file that lets you navigate the options offered by this program.
+
+## (1) Downloading NCBI Viral Protein Genomes
 
 
 After choosing the virus to analyze from the left-hand side as well as selected filters, following the following steps in the ‘Download’ button on the top left-hand corner: 
