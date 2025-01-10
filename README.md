@@ -29,10 +29,10 @@ The following steps determine the variability among the consensus sequence so it
 
 From here, it is important to analyze the ORF (open reading frame) of the start and stop codons. Finding ones that are in the same reading frame that also encompass the largest protein is crucial for further analysis. After determining the Accession Numbers that do not align with the ORF determined, deletion of these ID’s from the dataset and a run-through of steps 6-13 is required for accurate depiction of the protein.
 
-**Example Files**
+**File Organization**
 
-To view example files of each step, reference the 
-
+To view the code used for each step, reference the */code* directory in this repository. To view example files of each step, reference the */test_files* directory in the respository. 
+The future_plans file present in the repository represents what still needs to be done in this project.
 
 ## Downloading Code for Usage
 
@@ -48,11 +48,11 @@ This should launch the main python file that lets you navigate the options offer
 
 ## (1) Downloading NCBI Viral Protein Genomes
 
+This step guides the user through choosing the coding regions of the virus of interest. If already done, please move on to step 2.
 
-After choosing the virus to analyze from the left-hand side as well as selected filters, following the following steps in the ‘Download’ button on the top left-hand corner: 
+Head over to the [NCBI Virus Database](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/), and type the name of the virus of interest in the search bar.
 
-Download -> Coding Regions -> All Records -> Default Naming Convention.
-The output of this download is going to be a .fasta File. Open the file in .txt format and save that as a new file. This is going to be the starting file for the rest of the functions as part of the program.
+After loading the page for the main databse, select the subset of datapoints based on the selection bar on the left. After doing so, select download on the top left-hand corner and follow the steps below: *"Download -> Coding Regions -> All Records -> Default Naming Convention"*. The output of this download is going to be a *".fasta"* File. Open the file in *".txt"* format and save that as a new file. For ease, name this *"all_coding_regions.txt"*. This is going to be the starting file for the rest of the functions.
 
 **(2) Determining Protein Types Present in NCBI Fasta File**
 
