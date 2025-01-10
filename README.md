@@ -63,9 +63,17 @@ For example, some the naming conventions present for the large surface protein f
 
 Once the list is finalized, select **02** on the code. When prompted to, list out all the protein-type names to include. Make sure to paste them in the same format as they are present in the list. If spaces and other miscellaneous characters are present in the list, make sure to type it out in the exact same manner. Once finished, type done. The output file will be focused on just the protein types you chose.
 
-**(4) Determining Longest Protein Sequences**
+An example of such a file can be found in *"`/test_files/(1)all_coding_regions/selectedpros.txt`"*.
 
-Once finished with the previous step, it is time to pick the genotypes you want to analyze as well as finding the longest. Run VCSAT.py code on your terminal window. When prompted to, pick option (3) and go along with the code. A file for each genotype will be created in your desired folder.
+Refer /code/functions.py and the 'determining_protein_types' function for technical code.
+
+## (3) Determining Longest Protein Sequences
+
+Picking the longest protein for each Accession ID is crucial since that is most representative of the entire protein length. For example, when dealing with the Large Surface Antigen of the Hep-B Virus (length = 1200 bp), entries close to this length will be chosen versus those with a larger difference. 
+
+Run VCSAT.py code on your terminal window. When prompted to, pick option **03** and go along with the code. A file for each genotype will be created in your desired folder.
+
+An example of such a file can be found in 
 
 **(5) Creating Files for Consensus Sequence Determination**
 
