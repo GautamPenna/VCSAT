@@ -93,15 +93,18 @@ An example of such a file can be found in *`/test_files/(2)pre_deletion_files/Av
 
 An example of such a graphical representation can be found in *`/test_files/(4)graphs_pictures/A_pre_mod_graph.png`*.
 
-**(8) ORF Analysis**
+## (6) ORF Analysis
 
-After determining the variability of the entire consensus genome, it is important to find an ORF (Open Reading Frame) that includes both a start and stop codon. This truly represents a full protein sequence since it implies that the genetic code can be transcribed into a functional protein. In order to determine the most likely ORF, run VCSAT.py on your terminal window. When prompted to, pick option (8) and go along with the code. Create the file in the desired directory and run VCSAT.py. This time, pick option (9) and go along with the code. This allows you to analyze various options available for ORFs. When selecting likely candidate ORFs, make sure to account of the length of the desired protein and overall variability of the positions. More variability implies having a smaller sample size to perform analysis. 
+After determining the variability of the entire consensus genome, it is important to find an ORF (Open Reading Frame) that includes both a start and stop codon. This truly represents a full protein sequence since it implies that the genetic code can be transcribed into a functional protein. In order to determine the most likely ORF, run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **08**. Create the file in the desired directory and run VCSAT.py again. This time, pick option **(09)** and go along with the code. This allows you to analyze various options available for ORFs. When selecting likely candidate ORFs, make sure to account of the length of the desired protein and overall variability of the positions. More variability implies having a smaller sample size to perform analysis. 
 
-**(9) Post-ORF Data Cleaning**
+An example of such a file can be found in *`/test_files/(2)pre_deletion_files/AORF.txt`*.
 
-If at this stage of the code, there are likely Accession numbers that need to be deleted as well as genomes that could be modified due to the variability of the stop codon. To delete Accession numbers, run VCSAT.py on your terminal window. When prompted to, pick option (5) and go along with the code. The input for this code would be the max_lengths file that is the result at the end of Step 4. After deleting the said Accession numbers, run through steps 4-6. After getting the output of this step, run VCSAT.py on your terminal window. When prompted to, pick option (10) and go along with the code. Edit the sequences are required and continue with steps 7-8.
+## (7) Post-ORF Data Cleaning
 
+If at this stage of the code, there are likely Accession numbers that need to be deleted as well as genomes that could be modified due to the variability of the stop codon. To delete Accession numbers, run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **05**. and go along with the code. The input for this code would be the max_lengths file that is the result at the end of Step 3. After deleting the said Accession numbers, run through steps 4-6. After getting the output of this step, run run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **10**. and go along with the code. Edit the sequences are required and repeat Step 5.
 
-**(10) Creating Color Coded Variability Map**
+An example of such a files can be found in *`/test_files/(3)pre_deletion_files`*.
 
-To create a color-coded map of the variabilities present in the ORF chosen, run VCSAT.py on your terminal window. When prompted to, pick option (11) and go along with the code.
+## (8) Creating Color Coded Variability Map
+
+To create a color-coded map of the variabilities present in the ORF chosen,run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **11**. 
