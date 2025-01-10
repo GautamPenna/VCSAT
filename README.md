@@ -65,7 +65,7 @@ Once the list is finalized, select **02** on the code. When prompted to, list ou
 
 An example of such a file can be found in *"`/test_files/(1)all_coding_regions/selectedpros.txt`"*.
 
-Refer /code/functions.py and the 'determining_protein_types' function for technical code.
+Refer `/code/functions.py` and the ` py determining_protein_types` function for technical code.
 
 ## (3) Determining Longest Protein Sequences
 
