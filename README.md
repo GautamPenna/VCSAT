@@ -65,7 +65,7 @@ Once the list is finalized, select **02** on the code. When prompted to, list ou
 
 An example of such a file can be found in *"`/test_files/(1)all_coding_regions/selectedpros.txt`"*.
 
-Refer `/code/functions.py` and the ` py determining_protein_types` function for technical code.
+Refer `/code/functions.py` and the `determining_protein_types` and `key_protein_lengths` function for technical code.
 
 ## (3) Determining Longest Protein Sequences
 
@@ -73,7 +73,9 @@ Picking the longest protein for each Accession ID is crucial since that is most 
 
 Run VCSAT.py code on your terminal window. When prompted to, pick option **03** and go along with the code. A file for each genotype will be created in your desired folder.
 
-An example of such a file can be found in 
+An example of such a file can be found in *"`/test_files/(2)pre_deletion_files/A_genotype_max_lengths.txt`"*.
+
+Refer `/code/functions.py` and the `finding_longest_protein` function for technical code.
 
 **(5) Creating Files for Consensus Sequence Determination**
 
