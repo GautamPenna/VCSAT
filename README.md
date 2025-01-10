@@ -9,19 +9,18 @@ This respository contains code files and a step-by-step documentation on how to 
 
 **Methodology Overview**:
 1.	Downloading sequences from NCBI
-2.	Determining Protein Types present in Data
-3.	Picking Protein Types
-4.	Determining Longest Protein for every Accession Number (ID)
-5.	Creating Consensus Determination Files
-6.	MAFFT Alignment
-7.	Variability Calculation
-8.	Graphical representation of Variability and Position
-9.	ORF Match File Creation
-10.	ORF Analysis
-11.	Ascension Number Deletion
-12.	Genome Modifier
-13.	Color Coded Variability Graph
-14.	Protein Sequence Votes Calculator
+2.	Determining Protein Types and Selecting Key Protein Types
+3.	Determining Longest Protein for every Accession Number (ID)
+4.	Creating Consensus Determination Files
+5.	MAFFT Alignment
+6.	Variability Calculation
+7.	Graphical representation of Variability and Position
+8.	ORF Match File Creation
+9.	ORF Analysis
+10.	Ascension Number Deletion
+11.	Genome Modifier
+12.	Color Coded Variability Graph
+13.	Protein Sequence Votes Calculator
 
 ## General Outline of Sequence Determination
 
@@ -54,16 +53,15 @@ Head over to the [NCBI Virus Database](https://www.ncbi.nlm.nih.gov/labs/virus/v
 
 After loading the page for the main databse, select the subset of datapoints based on the selection bar on the left. After doing so, select download on the top left-hand corner and follow the steps below: *"`Download -> Coding Regions -> All Records -> Default Naming Convention`"*. The output of this download is going to be a *"`.fasta`"* File. Open the file in *"`.txt`"* format and save that as a new file. For ease, name this *"`all_coding_regions.txt`"*. This is going to be the starting file for the rest of the functions.
 
-**(2) Determining Protein Types Present in NCBI Fasta File**
+## (2) Determining Protein Types Present and Selecting Key Protein Types
 
-Run VCSAT.py code on your terminal window. When prompted to, pick option (1). When prompted to input the specific file, copy and paste the entire pathway the .txt file from above. 
+Run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **01**. When prompted to input the specific file, type the entire pathway for the *"`all_coding_regions.txt`"* file. For example, if the file is present on your desktop **AND** if using a MacBook, the pathway would be *"`/Users/(username)/Desktop/all_coding_regions.txt`"*
 
-The output of this command is going to be a list of all the various naming conventions for protein types that are present in the FASTA download. Copy and paste this list in a different document and pick out the protein types that you wish to include for further analysis. A file named ‘All_protein_entry.txt’ will be made. DO NOT DELETE this file if you wish to proceed with the code.
+The output of this command is going to be a list of all the various naming conventions for protein types that are present in the FASTA download. Copy and paste this list in a different document and pick out the protein types that you wish to include for further analysis. A file named ‘All_protein_entry.txt’ will be made. **DO NOT DELETE** this file if you wish to proceed with the code. 
 
-**(3) Picking Protein Types to Analyze**
+For example, some the naming conventions present for the large surface protein for Hepatitis-B are *large S protein, truncated large surface protein, Large S protein, preS1/preS2/S protein, large S antigen, L-HBsAg*. Though many more are present, these are a few used. Make sure to select all possible naming conventions despite spelling errors, since this is what is used throughout the program. Make sure to list the selected protein types to the side before continuing the program.
 
-After choosing wish protein types to analyze further, run VCSAT.py code on your terminal window. When prompted to, pick option (2). When prompted to, paste all the various protein types that you would like to analyze further. Make sure to paste them in the same format as they are present in the list. If spaces and other miscellaneous characters are present in the list, make sure to type it out in the exact same manner. When prompted to, type out the file path for this code’s output file. In the output file, you will see only the protein types that you selected and their associated lengths. This is important for later in the program.
-
+Once the list is finalized, select **02** on the code. When prompted to, list out all the protein-type names to include. Make sure to paste them in the same format as they are present in the list. If spaces and other miscellaneous characters are present in the list, make sure to type it out in the exact same manner. Once finished, type done. The output file will be focused on just the protein types you chose.
 
 **(4) Determining Longest Protein Sequences**
 
