@@ -5,7 +5,7 @@ This respository contains code files and a step-by-step documentation on how to 
 
 > *Consensus Sequence: each nucleotide position is determined by the most common nucleotide across all data points*
 
-### ✍️ Author: Gautam Penna, Ke Lab, University of Texas at Austin
+### ✍️ Author: Gautam Penna, [Ke Lab](https://www.zunlongke-lab.org/), University of Texas at Austin
 
 **Methodology Overview**:
 1.	Downloading sequences from NCBI
