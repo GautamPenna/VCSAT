@@ -52,7 +52,7 @@ This step guides the user through choosing the coding regions of the virus of in
 
 Head over to the [NCBI Virus Database](https://www.ncbi.nlm.nih.gov/labs/virus/vssi/#/), and type the name of the virus of interest in the search bar.
 
-After loading the page for the main databse, select the subset of datapoints based on the selection bar on the left. After doing so, select download on the top left-hand corner and follow the steps below: *"Download -> Coding Regions -> All Records -> Default Naming Convention"*. The output of this download is going to be a *".fasta"* File. Open the file in *".txt"* format and save that as a new file. For ease, name this *"all_coding_regions.txt"*. This is going to be the starting file for the rest of the functions.
+After loading the page for the main databse, select the subset of datapoints based on the selection bar on the left. After doing so, select download on the top left-hand corner and follow the steps below: *"`Download -> Coding Regions -> All Records -> Default Naming Convention`"*. The output of this download is going to be a *"`.fasta`"* File. Open the file in *"`.txt`"* format and save that as a new file. For ease, name this *"`all_coding_regions.txt`"*. This is going to be the starting file for the rest of the functions.
 
 **(2) Determining Protein Types Present in NCBI Fasta File**
 
