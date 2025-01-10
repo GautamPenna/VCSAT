@@ -21,6 +21,7 @@ This respository contains code files and a step-by-step documentation on how to 
 11.	Ascension Number Deletion
 12.	Genome Modifier
 13.	Color Coded Variability Graph
+14.	Protein Sequence Votes Calculator
 
 ## General Outline of Sequence Determination
 
@@ -30,7 +31,7 @@ From here, it is important to analyze the ORF (open reading frame) of the start 
 
 **Example Files**
 
-To 
+To view example files of each step, reference the 
 
 
 ## Downloading Code for Usage
