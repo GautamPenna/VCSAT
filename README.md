@@ -31,7 +31,7 @@ The future_plans file present in the repository represents what still needs to b
 
 ## Downloading Code for Usage
 
-In order to use the code present /code file, download the respository to your personal computer. After doing so, open your terminal window and navigate to the same directory as the respository. Once reached, type the following command:
+In order to use the code present /code file, download the respository to your personal computer. After doing so, open your terminal window and navigate to the same directory as the respository. Once reached, type the following command: gitpull
 
 ```py
 
