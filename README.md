@@ -31,7 +31,15 @@ The future_plans file present in the repository represents what still needs to b
 
 ## Downloading Code for Usage
 
-In order to use the code present /code file, download the respository to your personal computer. After doing so, open your terminal window and navigate to the same directory as the respository. Once reached, type the following command: gitpull
+In order to use the code present /code file, download the respository to your personal computer. After doing so, open your terminal window and navigate to directory you want the code to be placed in. Once reached, type the following command: 
+
+```
+
+git clone https://github.com/GautamPenna/VCSAT
+
+```
+
+This should download the repistory to the directory you are in. Once downloaded, type *"`cd VCSAT`"* to go inside the repository. After doing so, type the following to start the command:
 
 ```py
 
@@ -39,7 +47,15 @@ python VCSAT.py
 
 ```
 
-This should launch the main python file that lets you navigate the options offered by this program.
+When updates are indicated, enter the VCSAT directory and type:
+
+```
+
+git pull
+
+```
+
+This insures that the latest updates to the code are downloaded to your computer without overlap.
 
 ## (1) Downloading NCBI Viral Protein Genomes
 
