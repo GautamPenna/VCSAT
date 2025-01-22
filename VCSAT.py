@@ -25,28 +25,28 @@ while option != 'done':
     option = input('Please choose which option you want to proceed with: ')
 
     if option == '01':
-        os.system('python code/determining_protein_types_1.py')
+        os.system('python3 code/determining_protein_types_1.py')
     elif option == '02':
-        os.system('python code/picking_key_protein_types.py')
+        os.system('python3 code/picking_key_protein_types.py')
     elif option == '03':
-        os.system('python code/longest_protein_finder.py')
+        os.system('python3 code/longest_protein_finder.py')
     elif option == '04':
-        os.system('python code/creating_consensus_determination_input_files.py')
+        os.system('python3 code/creating_consensus_determination_input_files.py')
     elif option == '05':
-        os.system('python code/deleting_ascension_nums.py')  
+        os.system('python3 code/deleting_ascension_nums.py')  
     elif option == '06':
-        os.system('python code/votescalc.py')  
+        os.system('python3 code/votescalc.py')  
     elif option == '07':
-        os.system('python code/alignemnt_graphs.py') 
+        os.system('python3 code/alignemnt_graphs.py') 
     elif option == '08':
-        os.system('python code/orf_options.py') 
+        os.system('python3 code/orf_options.py') 
     elif option == '09':
-        os.system('python code/orf_analysis.py') 
+        os.system('python3 code/orf_analysis.py') 
     elif option == '10':
-        os.system('python code/genome_modifier.py') 
+        os.system('python3 code/genome_modifier.py') 
     elif option == '11':
-        os.system('python code/color_coded_graph.py')
+        os.system('python3 code/color_coded_graph.py')
     elif option == '12':
-        os.system('python code/protein_votes_files.py')
+        os.system('python3 code/protein_votes_files.py')
 
 print('Thank you for using our code. Come back soon!')
