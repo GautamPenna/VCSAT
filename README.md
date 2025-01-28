@@ -57,6 +57,8 @@ git pull
 
 This insures that the latest updates to the code are downloaded to your computer without overlap.
 
+Inside your own terminal window, make sure to install pandas, numpy, matplotlib and seaborne.
+
 ## (1) Downloading NCBI Viral Protein Genomes
 
 This step guides the user through choosing the coding regions of the virus of interest. If already done, please move on to step 2.
