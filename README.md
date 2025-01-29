@@ -7,6 +7,9 @@ This respository contains code files and a step-by-step documentation on how to 
 
 ### ✍️ Author: Gautam Penna, [Ke Lab](https://www.zunlongke-lab.org/), University of Texas at Austin
 
+**PURPOSE**
+When present with the challenge of analyzing a viral genome, it becomes increasingly complicated when one realizes that no two-genomes are exactly the same. Mutations between every viral particle, even of the same genotype, subgroup or serotype, are inevitable. It is been agreed upon that the difference between genotypes is a genomic difference of 8% or greater, with subgroup variations between 4-8%. However, even within subgroup, nucleotide and even protein differences arise. The need for a consensus sequence is and the associated variability at each position is crucial for understanding the most mutable and constant regions of a viral genome and protein. Understanding this functionality allows for the creation of antibody and future drug targets against the virus. This application takes its users through a step-by-step methodology of determining the consensus sequence and variability of the protein at each position. We hope that you will be able to utilize this in any means possible to help your project.
+
 **Methodology Overview**:
 1.	Downloading sequences from NCBI
 2.	Determining Protein Types and Selecting Key Protein Types
@@ -15,8 +18,9 @@ This respository contains code files and a step-by-step documentation on how to 
 5.	Variability Calculation and Graphical Representation
 6.	ORF Match File Creation and ORF Analysis
 7.	Ascension Number Deletion/Genome Modifier
-8.	Color Coded Variability Graph
-9.	Protein Sequence Votes Calculator
+8.  Protein Translations and Votes File
+9.  Color Coded Graph
+10. Consensus Sequence Printer
 
 ## General Outline of Sequence Determination
 
@@ -123,6 +127,11 @@ If at this stage of the code, there are likely Accession numbers that need to be
 
 An example of such a files can be found in *`/test_files/(3)pre_deletion_files`*.
 
-## (8) Creating Color Coded Variability Map
+## (8) Protein Translations and Protein Variability
 
-To create a color-coded map of the variabilities present in the ORF chosen,run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **11**. 
+After determining the full genome sequence of the desired proteins, it is important to translate the genome into a full amino acid sequence to determine the primary structure of the protein. Run *"`python VCSAT.py`"* on your terminal window. When prompted to, type **11**. This will prompt you to create to an alingment file that contains the protein translation of the DNA sequence. After doing so, type **12** when prompted to. This will allow you to create a votes file with variablities of the protein sequence. This is important since variabilities in the genome are not always present in the protein, espically when the variability is present in the 3rd nucleotide of a codon. 
+
+## (9) Color-Coded Gradient Variability Graph
+
+For a non-graphical visualization of the variability present in the genome and protein sequences, type **14** when prompted to do so. This will generate a gradient graph that displays the variability, with a dark-shade of red representing more variability.
+ 
