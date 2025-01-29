@@ -61,7 +61,22 @@ git pull
 
 This insures that the latest updates to the code are downloaded to your computer without overlap.
 
-Inside your own terminal window, make sure to install pandas, numpy, matplotlib and seaborne.
+Before running this code, make sure your computer has the numpy, pandas, matplotlib and seaborne python libraries installed. If not, follow the commands below to do so:
+
+```
+
+pip install numpy
+pip install pandas
+pip install matplotlib
+pip install seaborne
+
+```
+
+To understand what each library is used for, please refer to the documentation below:
+(1) [Numpy](https://numpy.org/doc/)
+(2) [Pandas](https://pandas.pydata.org/docs/)
+(3) [MatPlotLib](https://matplotlib.org/stable/index.html)
+(4) [SeaBorne](https://seaborn.pydata.org/)
 
 ## (1) Downloading NCBI Viral Protein Genomes
 
