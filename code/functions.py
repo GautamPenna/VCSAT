@@ -14,6 +14,37 @@ from PIL import ImageDraw, ImageFont
 
 
 
+
+
+def translate(seq): 
+       
+    table = { 
+        'ATA':'I', 'ATC':'I', 'ATT':'I', 'ATG':'M', 
+        'ACA':'T', 'ACC':'T', 'ACG':'T', 'ACT':'T', 
+        'AAC':'N', 'AAT':'N', 'AAA':'K', 'AAG':'K', 
+        'AGC':'S', 'AGT':'S', 'AGA':'R', 'AGG':'R',                  
+        'CTA':'L', 'CTC':'L', 'CTG':'L', 'CTT':'L', 
+        'CCA':'P', 'CCC':'P', 'CCG':'P', 'CCT':'P', 
+        'CAC':'H', 'CAT':'H', 'CAA':'Q', 'CAG':'Q', 
+        'CGA':'R', 'CGC':'R', 'CGG':'R', 'CGT':'R', 
+        'GTA':'V', 'GTC':'V', 'GTG':'V', 'GTT':'V', 
+        'GCA':'A', 'GCC':'A', 'GCG':'A', 'GCT':'A', 
+        'GAC':'D', 'GAT':'D', 'GAA':'E', 'GAG':'E', 
+        'GGA':'G', 'GGC':'G', 'GGG':'G', 'GGT':'G', 
+        'TCA':'S', 'TCC':'S', 'TCG':'S', 'TCT':'S', 
+        'TTC':'F', 'TTT':'F', 'TTA':'L', 'TTG':'L', 
+        'TAC':'Y', 'TAT':'Y', 'TAA':'-', 'TAG':'-', 
+        'TGC':'C', 'TGT':'C', 'TGA':'-', 'TGG':'W', 
+    } 
+    protein ="" 
+    if len(seq)%3 == 0: 
+        for i in range(0, len(seq), 3): 
+            codon = seq[i:i + 3] 
+            try: protein+= table[codon]
+            except: protein += '-'
+
+    return protein 
+
 def remove_indexes(string, indexes):
     result = ""
     for i, char in enumerate(string):
@@ -515,28 +546,27 @@ def alignment_sequences_modifier(alignment_file):
 
     print('Your old Ascension Alignment file has been modified with the new nucleotides.')
 
-def color_coded_var_graph(votes_file, name_of_image):
+def color_coded_var_graph(votes_file, name_of_image, ORF_start, ORF_end):
     df = pd.read_csv(votes_file)
-    row_count = len(df)
+    row_count = int(ORF_end) - int(ORF_start) + 1 #len(df)
     num = math.sqrt(row_count)
     num += 10
     num = int(round(num,0))
     axis = num*10
 
-    image = Image.new("RGB", (axis, axis), "white") #height and width are the number
-    
+    image = Image.new("RGB", (axis, axis + 60), "white") #height and width are the number
     I1 = ImageDraw.Draw(image)
-    font = ImageFont.load_default()
+    #font = ImageFont.load_default()
     
 
 
     # Add Text to an image
 
     for i in range(row_count):
-        nuc = df.loc[i, 'Consensus_Nucleotide']
+        nuc = df.loc[i + int(ORF_start), 'Consensus_Nucleotide']
         var = int(df.loc[i, 'Percent_Variability'])
 
-        bbox = I1.textbbox((0, 0), nuc, font=font)
+        bbox = I1.textbbox((0, 0), nuc)#, font='Times New Roman')
 
         text_width = bbox[2] - bbox[0]
         text_height = bbox[3] - bbox[1]   
@@ -544,12 +574,12 @@ def color_coded_var_graph(votes_file, name_of_image):
         
 
         fill = (255,255,255)
-        if var <= 1: fill = (255,255,255)
-        elif (var > 1 and var <= 10): fill = (255,0,0)
-        elif (var > 10 and var <= 20): fill = (0,255,0)
-        elif (var > 20 and var <= 30): fill = (0,0,255)
-        elif (var > 30 and var <= 40): fill = (255,255,100)
-        elif (var > 40 and var <= 50): fill = (255,0,255)
+        if var <= 1: fill = (220,220,220)
+        elif (var > 1 and var <= 10): fill = (246,189,192) #gradients received from https://www.schemecolor.com/red-gradient.php
+        elif (var > 10 and var <= 20): fill = (241,149,155)
+        elif (var > 20 and var <= 30): fill = (240,116,112)
+        elif (var > 30 and var <= 40): fill = (234,76,70)
+        elif (var > 40 and var <= 50): fill = (220,28,19)
 
 
 
@@ -559,13 +589,29 @@ def color_coded_var_graph(votes_file, name_of_image):
 
         I1.rectangle([x, y, x + text_width, y + text_height], fill = fill)
         I1.text((x, y), str(nuc), fill=(0,0,0))
-        
+
+        start_color = (255, 255, 255)  # white
+        end_color = (255, 0, 0)    # red
+
+        I1.text((20,axis - 20), 'Variability Legend:', fill = (0,0,0))
+
+        lbound = axis-40
+
+        for i in range(lbound):
+            r = int(start_color[0] + (end_color[0] - start_color[0]) * i / lbound)
+            g = int(start_color[1] + (end_color[1] - start_color[1]) * i / lbound)
+            b = int(start_color[2] + (end_color[2] - start_color[2]) * i / lbound)
+            I1.line([(i + 20, axis), (i + 20, axis + 15)], fill=(r, g, b))
+
+        I1.text((20,axis + 25), '0%', fill = (0,0,0))
+        I1.text((lbound,axis + 25), '49%', fill = (0,0,0))
 
     
     # Save the edited image
     image.save(name_of_image)
 
 def protein_votes_file (alignment_file, votes_file):
+
     # Genotype specific things you need to know - length of consensus sequence, which should be the same as every sequence
 
     complete_text = ''
@@ -633,3 +679,179 @@ def protein_votes_file (alignment_file, votes_file):
             total_count_check = same_count + diff_count
             file.write(str(i) + ',' + con_nuc[i] + ',' + str(same_count) + ',' + str(diff_count) + ',' + str(total_count_check) + ',' + str(percent_variability*100))
             file.write('\n')
+
+def protein_translator(alignment_file, ORF_start, ORF_end, new_file_path, plength):
+    complete_text = ''
+    genomes = []
+    ids = []
+    with open(alignment_file, 'r') as file:
+        for line in file:
+            line = line.replace('\n','')
+            line = line.replace(' ','')
+            complete_text += line
+        first_index = 0
+        while first_index != -1:
+            first_index = complete_text.find('____')
+            id_index = complete_text.find('>')
+            genome_pc = complete_text[first_index + 4:first_index + 5 + int(plength)] #genome post consensus
+            id_pc = complete_text[id_index + 1:id_index+9]
+            #print(id_pc)
+            #print(genome_pc)
+            genomes.append(genome_pc)
+            ids.append(id_pc)                    
+            complete_text = remove_indexes(complete_text, [id_index,first_index, first_index + 1, first_index + 2, first_index + 3])
+                    
+    genomes.pop()
+    ids.pop()
+
+    orfs_for_all = []
+    for entry in genomes:
+        orf = entry[ORF_start:ORF_end+1]
+        orfs_for_all.append(orf)
+
+    proteins = []
+    for entry in orfs_for_all: proteins.append(translate(entry))
+
+    with open(new_file_path, 'w') as file:
+        for i in range(len(ids)):
+            file.write('>')
+            file.write(ids[i] + str('protein_random_name___'))
+            file.write(proteins[i])
+            file.write('\n')
+
+def color_coded_graph_v2(genome_votes_file, protein_votes_file, name_of_image, ORF_start, ORF_end):
+    df_genome = pd.read_csv(genome_votes_file)
+    df_protein = pd.read_csv(protein_votes_file)
+
+
+    row_count = int(ORF_end) - int(ORF_start) + 1 #len(df)
+    p_row_count = int((int(ORF_end) - int(ORF_start) + 1)/3)
+    buffer = 60
+    num = 90 #math.sqrt(row_count) + 10
+    #num = int(round(num,0))
+
+    axis = num*10
+
+    image = Image.new("RGB", (2*axis + 30, 2*(axis) + 120), "white") #height and width are the number
+    I1 = ImageDraw.Draw(image)
+
+    def fill_color(pos_var,df_genome):
+       max_var = 0
+       cur_var = 0
+       for index, row in df_genome.iterrows():
+            cur_var = row['Percent_Variability']
+            if max_var < cur_var: max_var = cur_var
+       blue_color = int(255 - 255*(pos_var/max_var))
+       green_color = int(255 - 255*(pos_var/max_var))
+       fill_color = (255, green_color,blue_color)
+       return fill_color, max_var
+
+    for i in range(row_count):
+        nuc = df_genome.loc[i + int(ORF_start), 'Consensus_Nucleotide']
+        var = int(df_genome.loc[i + int(ORF_start), 'Percent_Variability'])
+
+        bbox = I1.textbbox((0, 0), nuc)#, font='Times New Roman')
+
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]   
+
+        
+
+        #fill = (255,255,255)
+        #if var <= 1: fill = (255,255,255)
+        #elif (var > 1 and var <= 10): fill = (246,189,192) #gradients received from https://www.schemecolor.com/red-gradient.php
+        ##elif (var > 10 and var <= 20): fill = (241,149,155)
+        #elif (var > 20 and var <= 30): fill = (240,116,112)
+        #elif (var > 30 and var <= 40): fill = (234,76,70)
+        #elif (var > 40 and var <= 50): fill = (220,28,19)
+
+        ### AXIS DETERMINATION
+        y = int((i - (i % num))/num)*60 + 1
+        x = (i % num)*10 + 1 + buffer
+
+        color, max_var = fill_color(var, df_genome)
+
+        I1.rectangle([x, y, x + text_width-1, y + text_height], fill = color)
+        I1.text((x, y), str(nuc) + ' ', fill=(0,0,0))
+
+        if (i%3 == 0): I1.rectangle([x-2,y-2,x + 3*text_width + 7, y + text_height + 50], outline = 'black')
+        else: pass
+
+    for j in range(p_row_count):
+        pro = df_protein.loc[j, 'Consensus_Nucleotide']
+        var = int(df_protein.loc[j, 'Percent_Variability'])
+
+        bbox = I1.textbbox((0, 0), pro)#, font='Times New Roman')
+
+        text_width = bbox[2] - bbox[0]
+        text_height = bbox[3] - bbox[1]   
+
+        
+
+        #fill = (255,255,255)
+        #if var <= 1: fill = (200,200,200)
+        #elif (var > 1 and var <= 10): fill = (246,189,192) #gradients received from https://www.schemecolor.com/red-gradient.php
+        #elif (var > 10 and var <= 20): fill = (241,149,155)
+        #elif (var > 20 and var <= 30): fill = (240,116,112)
+        #elif (var > 30 and var <= 40): fill = (234,76,70)
+        #elif (var > 40 and var <= 50): fill = (220,28,19)
+
+        #start_fill = (255,255,255)
+        
+
+        ### AXIS DETERMINATION
+        y = int((j - (j % (num/3)))/(num/3))*60 + 21
+        y_nuc = y + 20
+        x = (j % (num/3))*30 + 11 + buffer
+
+        color, max_var2 = fill_color(var, df_protein)
+
+        string = str(pro)
+
+        I1.rectangle([x-9, y-3, x + 14, y + 14], fill = color)
+        I1.text((x, y), string, fill=(0,0,0))
+        if j+1 < 10: #aestheic letter number pairing.
+            I1.text((x + 1, y_nuc), str(j + 1), fill=(0,0,0))
+        elif j+1 < 100:
+            I1.text((x-2, y_nuc), str(j + 1), fill=(0,0,0))
+        else: I1.text((x-5, y_nuc), str(j + 1), fill=(0,0,0))
+ 
+    start_color = (255, 255, 255)  # white
+    end_color = (255, 0, 0)    # red
+
+    I1.text((buffer,y_nuc + 30), 'Variability Legend:', fill = (0,0,0))
+
+    lbound = axis-40
+
+    for i in range(lbound):
+        r = int(start_color[0] + (end_color[0] - start_color[0]) * i / lbound)
+        g = int(start_color[1] + (end_color[1] - start_color[1]) * i / lbound)
+        b = int(start_color[2] + (end_color[2] - start_color[2]) * i / lbound)
+        I1.line([(i + buffer, y_nuc + 50), (i + buffer, y_nuc + 65)], fill=(r, g, b))
+
+    I1.text((buffer,y_nuc + 75), '0%', fill = (0,0,0))
+    I1.text((lbound + 50,y_nuc + 75), str(int(max_var)) + '%', fill = (0,0,0))
+
+    I1.text((0,1), 'Nucleotide: ', fill = (0,0,0))
+    I1.text((0,21), '    Protein: ', fill = (0,0,0))
+    I1.text((0,41), '   Position: ', fill = (0,0,0))
+
+    
+    
+    # Save the edited image
+    image.save(name_of_image)
+
+def get_consensus(votes_file):
+    df = pd.read_csv(votes_file)
+
+    consensus_sequence = ''
+    for index, row in df.iterrows():
+        consensus_sequence += row['Consensus_Nucleotide']
+
+    return(consensus_sequence)
+
+#def con_analyzer(votes_file, 
+
+
+
+
