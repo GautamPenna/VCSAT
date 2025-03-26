@@ -12,9 +12,33 @@ import os
 from PIL import Image
 from PIL import ImageDraw, ImageFont
 
+def get_genomes_from_alignment_file(alignment_file):
+    num_rows = int(input('How many rows are in your votes file: '))
+    complete_text = ''
+    genomes = []
+    ids = []
+    with open(alignment_file, 'r') as file:
+        for line in file:
+            line = line.replace('\n','') #takes away any new lines
+            line = line.replace(' ','') #takes away any spaces
+            complete_text += line
+        first_index = 0
+        while first_index != -1:
+            first_index = complete_text.find('___')
+            id_index = complete_text.find('>')
+            genome_pc = complete_text[first_index + 3:first_index + 3 + num_rows + 1] #genome post consensus. The plus one accounts for the fact that python doesnt read the last character
+            id_pc = complete_text[id_index + 1:id_index+9]
+            genomes.append(genome_pc)
+            ids.append(id_pc)
+            complete_text = remove_indexes(complete_text, [id_index,first_index, first_index + 1, first_index + 2])
+                    
 
+    genomes.pop()
+    ids.pop()
 
+    #print(genomes[1])
 
+    return(genomes, ids)
 
 def translate(seq): 
        
@@ -52,11 +76,14 @@ def remove_indexes(string, indexes):
             result += char
     return result
 
-def determining_protein_types(file_name): #Our example is /Users/tompenn/Documents/KE_LAB/Hep_B_surface_protien_project/(1)coding_regions.txt'
-    with open(file_name, 'r') as file_one:
-        transcript = file_one.read().replace("\n", "")
-        data_points_entry_list = []
-        first_index = 0
+def determining_protein_types(file_name, all_pros_file_path): #Our example is /Users/tompenn/Documents/KE_LAB/Hep_B_surface_protien_project/(1)coding_regions.txt'
+    
+    #OLD WAY TO PARSE THROUGH DATA ENTRY LIST, didn't work for HepC due to more > than Hep B.
+    
+    '''with open(file_name, 'r') as file_one:
+        transcript = file_one.read().replace("\n", "") #remove all spaces between entries
+        data_points_entry_list = [] #create empty list
+        first_index = 0 
         count = 0
         while first_index != -1:
             first_index = transcript.find('>')
@@ -65,10 +92,41 @@ def determining_protein_types(file_name): #Our example is /Users/tompenn/Documen
             second_index += 1
             data_points_entry_list.append(transcript[first_index + 1:second_index])
             transcript = new_transcript[second_index-1:]
-            count += 1
+            count += 1'''
 
-    file = open('All_protein_entry.txt', 'w')
+
+    #new way to parse through and create data_points_entry_list
+    # First find |, then go forward to find the next >, go back to find hte first >, then delete this entry.
+
+    with open(file_name, 'r') as file_one:
+        transcript = file_one.read().replace("\n", "") #remove all spaces between entries
+        data_points_entry_list = [] #create empty list
+        first_index = 0 
+        while first_index != -1:
+            first_index = transcript.find('|')
+            #print(first_index)
+            gsigns = []
+            for i in range(first_index):
+                if transcript[i] == '>': 
+                    gsigns.append(i)
+                    #print(i)
+                else: pass
+            try: 
+                zeroth_index = min(gsigns)
+                #print(zeroth_index)
+            except: 
+                zeroth_index = 0
+                #print('Default')
+            new_transcript = transcript[first_index + 1:]
+            second_index = new_transcript.find('>') + 1
+            data_points_entry_list.append(transcript[zeroth_index + 1:second_index])
+            transcript = new_transcript[second_index-1:]
+        
+    file_one.close()
+
+    file = open(all_pros_file_path, 'w')
     file.write('ID,Entry')
+
     file.write('\n')
 
     protien_type_list = []
@@ -86,24 +144,37 @@ def determining_protein_types(file_name): #Our example is /Users/tompenn/Documen
 
     file.close()   #Cant go through 40K sequences every time, going to make it into a file that I can always look at.
 
-    return(list(set(protien_type_list))) # with this command and above for loop, we got the list of protein classifications for surface protiens
+    return list(set(protien_type_list)) # with this command and above for loop, we got the list of protein classifications for surface protiens
 
-def key_protein_lengths(protein_type_list, output_file_name): ### End product was a file that had lengths of proteins and their associated accension #'s labeled in a csv format.
+def key_protein_lengths(protein_type_list, output_file_name, all_pros_file_path): ### End product was a file that had lengths of proteins and their associated accension #'s labeled in a csv format.
     protien_lengths_file = open(output_file_name, 'w')
     protien_lengths_file.write('ID,Protien_Name,Sequence,Length,Genotype')
     protien_lengths_file.write('\n')
 
-    with open('All_protein_entry.txt', 'r') as file:
+    with open(all_pros_file_path, 'r') as file:
+        #print('File Opened!')
         for line in file:
             id_num = line[0:10]
             entry = line[11:]
             name_start = line.find('|')
             name_end = line.find('[')
             name = line[name_start+1:name_end-1]
+
+
+            name_line = line[name_start:]
+            
+            display_end = min([name_line.find('['), name_line.find(',')])
+            display_name = name_line[1:display_end]
+
+
+
             if 'genotype' in line: 
                 ind_genotype = line.find('genotype') + 9
-                genotype = line[ind_genotype:ind_genotype+1]
-            else: genotype = 'N/A'
+                new_line = line[ind_genotype:]
+                ind_end_genotype = new_line.find(']')
+                #print(ind_genotype, ind_end_genotype)
+                genotype = line[ind_genotype:ind_genotype + ind_end_genotype]
+            else: genotype = 'Nada'
             for type_protien in protein_type_list:
                 if name==type_protien:
                     start_index = entry.find(']') + 1
@@ -111,11 +182,11 @@ def key_protein_lengths(protein_type_list, output_file_name): ### End product wa
                     sequence = sequence.replace('\n','')
                     sequence = sequence.replace(' ','')
                     len_seq = len(sequence)
-                    protien_lengths_file.write(str(id_num)+','+str(name)+','+str(sequence)+','+str(len_seq)+','+str(genotype))
+                    protien_lengths_file.write(str(id_num)+','+str(display_name)+','+str(sequence)+','+str(len_seq)+','+str(genotype))
                     protien_lengths_file.write('\n')
 
     protien_lengths_file.close()
-    print('Your file has been created in your requested pathway.')
+    #print('Your file has been created in your requested pathway.')
 
     #Purpose - Look for wanted Protein types and find the associated lengths to find the longest one.
     #Replace the list below with a list that you made
@@ -131,8 +202,11 @@ def key_protein_lengths(protein_type_list, output_file_name): ### End product wa
 
 def finding_longest_protein(last_file_name, genotypes, folder_name):  
     sequence_lengths_df = pd.read_csv(last_file_name)
+    #print(genotypes)
+    #print(sequence_lengths_df.head(10))
     for element in genotypes: 
         work_df = sequence_lengths_df[sequence_lengths_df['Genotype'] == element] ##### BASED ON WHAT GENOTYPE YOU WANT, CHANGE THAT HERE !!!!!!
+        print(work_df.head(10)) # - CANNOT USE N/A bc python pandas doesn't recognize this as an actual genotype but as no entry present here.
         accension_nums = work_df['ID'].tolist()
         unique_an = list(set(accension_nums))  ### Need to do this because each accension # has multiple entries for the various proteins
         for ID in unique_an:
@@ -155,9 +229,12 @@ def consensus_determination_file_creator(input_file, output_file):
     read_file = open(input_file, 'r')
     final_df = pd.read_csv(read_file)
     with open(output_file, 'w') as file: ### CHANGE THE NAME OF THE FILE WHEN NEEDED
+        i=0
         for index, row in final_df.iterrows():
-            file.write('>'+ row['ID'] + ' ' + row['Protien_Name'] + '.' + ' #' + '\n')
+            #file.write('>'+ row['ID'] + ' ' + row['Protien_Name'] + '.' + ' #' + '\n')
+            file.write('>' + 'protein_name' + '.#' + '\n') #ONLY USED TO CREATE PHYLOGENETIC TREE
             file.write(row['Sequence'] + '\n')
+            i += 1
 
 #make a deletion function that deletes certain acesnion #'s
 
@@ -184,12 +261,12 @@ def votes_calculator (alignment_file, votes_file):
         while remove_sign != -1:
             remove_sign = complete_text.find('>')
             complete_text = complete_text[remove_sign + 1:]
-            first_index = complete_text.find('____')
+            first_index = complete_text.find('___') # FOR SOME REASON HEP B HAS 4, NEED TO RE-EVAULUTE WHEN DETERMINING GEN D, E
             last_index = complete_text.find('>')
             if last_index == -1:
-                genome_pc = complete_text[first_index + 4:] #genome post consensus
+                genome_pc = complete_text[first_index + 3:] #genome post consensus  ### CHANGE TO 4 FOR HEP B
             else: 
-                genome_pc = complete_text[first_index + 4:last_index] #genome post consensus
+                genome_pc = complete_text[first_index + 3:last_index] #genome post consensus ### CHANGE TO 4 FOR HEP B
             genomes.append(genome_pc)
             #complete_text = complete_text[:first_index] + complete_text[first_index + 4:]
             #complete_text = complete_text[last_index + 1: ]
@@ -201,6 +278,7 @@ def votes_calculator (alignment_file, votes_file):
         sumi += len(entry)
     
     length = int(sumi/len(genomes))
+    #print(length)
 
     with open(votes_file, 'w') as file: #Change name of genotype here
         file.write('Position,Consensus_Nucleotide,A_count,T_count,G_count,C_count,Other_count,Total_count_check,Percent_Variability')
@@ -238,7 +316,7 @@ def votes_calculator (alignment_file, votes_file):
                 con_nuc = 'G'
                 percent_variability = (A_count + T_count + C_count + other_count)/(A_count + G_count + T_count + C_count + other_count)
             if con_count == other_count: 
-                con_nuc = '_'
+                con_nuc = '-'
                 percent_variability = (G_count + T_count + C_count + A_count)/(A_count + G_count + T_count + C_count + other_count)
             total_count_check = A_count + G_count + T_count + C_count + other_count
             file.write(str(i) + ',' + con_nuc + ',' + str(A_count) + ',' + str(T_count) + ',' + str(G_count) + ',' + str(C_count) + ',' + str(other_count) + ',' + str(total_count_check) + ',' + str(percent_variability*100))
@@ -625,7 +703,7 @@ def protein_votes_file (alignment_file, votes_file):
         while remove_sign != -1:
             remove_sign = complete_text.find('>')
             complete_text = complete_text[remove_sign + 1:]
-            first_index = complete_text.find('___')
+            first_index = complete_text.find('__')
             last_index = complete_text.find('>')
             if last_index == -1:
                 genome_pc = complete_text[first_index + 3:] #genome post consensus
@@ -639,6 +717,8 @@ def protein_votes_file (alignment_file, votes_file):
 
     #print(genomes)
 
+
+    
     sumi = 0
     for entry in genomes:
         sumi += len(entry)
@@ -850,8 +930,213 @@ def get_consensus(votes_file):
 
     return(consensus_sequence)
 
-#def con_analyzer(votes_file, 
+def gaps_in_seq(genome_votes_file, alignment_file, deletion_threshold):
+    con_seq = get_consensus(genome_votes_file)
+    df_votes = pd.read_csv(genome_votes_file)
+    positions = []
+    for pos in range(len(con_seq)): 
+        if con_seq[pos] == '-': positions.append(pos) #talking about indexes
+    num_rows = df_votes.shape[0]
 
+    complete_text = ''
+    genomes = []
+    ids = []
+    with open(alignment_file, 'r') as file:
+        for line in file:
+            line = line.replace('\n','')
+            line = line.replace(' ','')
+            complete_text += line
+        first_index = 0
+        while first_index != -1:
+            first_index = complete_text.find('____')
+            id_index = complete_text.find('>')
+            genome_pc = complete_text[first_index + 4:first_index + 4 + num_rows] #genome post consensus
+            id_pc = complete_text[id_index + 1:id_index+9]
+            genomes.append(genome_pc)
+            ids.append(id_pc)
+            complete_text = remove_indexes(complete_text, [id_index,first_index, first_index + 1, first_index + 2, first_index + 3])
+                    
+
+    genomes.pop()
+    ids.pop()
+
+    adt = [] #above deletion threshold positions
+    bdt = [] #below deletion threshold positions
+    print('These are the positions of consensus sequence that have "_" in the sequence: ' + str(positions))
+    for i in positions:
+        var = float(df_votes.loc[i, 'Percent_Variability'])
+        if var >= float(deletion_threshold): adt.append(i)
+        else: bdt.append(i)
+    
+    print('The positions below the deletion threshold are: ' + str(bdt))
+
+    bdt_acids = []
+    for pos in bdt:
+        for i in range(len(genomes)):
+            genome = genomes[i]
+            if genome[pos] != '-': 
+                bdt_acids.append(ids[i])
+                print('The Accession Number ' + str(ids[i]) + ' does not have a "-" in position ' + str(pos))
+
+    if len(adt) > 0:
+        print('The positions above the deletion threshold are: ' + str(adt))
+        for pos in adt:
+            pos_row = df_votes[df_votes['Position'] == pos]
+            print('Here are the variabilities for position ' + str(pos))
+            print(pos_row)
+            switch_nuc = input('Which nucleotide would you like to switch the consensus sequence with? Type "N" if you do not want to switch with any: ')
+            if switch_nuc == 'A':
+                df_votes.loc[df_votes['Position'] == pos, "Consensus_Nucleotide"] = 'A'
+            elif switch_nuc == 'G':
+                df_votes.loc[df_votes['Position'] == pos, "Consensus_Nucleotide"] = 'G'
+            elif switch_nuc == 'T':
+                df_votes.loc[df_votes['Position'] == pos, "Consensus_Nucleotide"] = 'T'
+            elif switch_nuc == 'C':
+                df_votes.loc[df_votes['Position'] == pos, "Consensus_Nucleotide"] = 'C'
+            
+        
+
+    
+        
+
+
+
+
+
+    else: print('There are no positions that have a variability difference higher than your threshold value.')
+
+def seq_var(votes_file, start_pos, end_pos):
+    ## This function serves to determine the variability of a select portion of the sequence by using the variabilities of the nucleotide in the bounds of the sequence
+
+    seq_range = int(end_pos) - int(start_pos) + 1
+
+    df = pd.read_csv(votes_file)
+    var_list = []
+    for index, row in df.iterrows():
+        var_list.append(float(row['Percent_Variability']))
+    
+    selected_range = []
+
+    for i in range(seq_range):
+        selected_range.append(var_list[start_pos - 1 + i])
+
+    seq_var = sum(selected_range)/len(selected_range)
+    
+    print('The variability of your selected sequence is: ' + str(seq_var) + '%.')
+
+def gap_analysis(votes_file, post_alignment_file):
+    con_seq = get_consensus(votes_file)
+    df_votes = pd.read_csv(votes_file)
+    positions = []
+    for pos in range(len(con_seq)): 
+        if con_seq[pos] == '-': positions.append(pos) #talking about indexes
+    num_rows = df_votes.shape[0]
+
+    genomes, ids = get_genomes_from_alignment_file(post_alignment_file)
+    positions = []
+    var_list = []
+
+    replacement_amino_acids = []
+
+    for index, row in df_votes.iterrows():
+        nuc = row['Consensus_Nucleotide']
+        if nuc == '-':
+            var_list.append(row['Percent_Variability'])
+            positions.append(int(row['Position']))
+        else: pass
+    
+    for pos in positions:
+        pos_dict = dict()
+        pos_string = ''
+        for genome in genomes:
+            pos_string += genome[pos]
+        unique_chars = list(set(pos_string))
+
+        for char in unique_chars: pos_dict.update({char: int(pos_string.count(char))})
+        #print(pos_dict)
+        values_sorted = sorted(pos_dict.values(), reverse=True)
+        max_val_2 = values_sorted[1]
+        keys = [key for key, value in pos_dict.items() if value == max_val_2][0] #only thing wrong with this method is what if there are multiple substitions with same value? Need to account for that later.
+        
+        print('In position: ' + str(pos) + ' there is a gap present. The second best substitution is: ' + str(keys) + '. There are ' + str(pos_dict.get(keys)) + ' to support this substitution.')
+        replacement_amino_acids.append(keys)
+    
+    continue_maybe = input('Would you like to replace all of these positions with the recommended amino acid (Y/N): ')
+    if continue_maybe == 'Y':
+        file_path = input('Type the pathway for the new alignment file to be stored: ')
+        file_path_2 = input('Type the pathway for the new votes file to be stored: ')
+        protein_name = input('What is the name of the protein you are analyzing: ')
+        # You have lists of geomes, ids, positions and replacement amino acids
+        for i in range(len(positions)):
+            for j in range(len(genomes)):
+                genomes[j] =  genomes[j][:positions[i]] + replacement_amino_acids[i] + genomes[j][positions[i] + 1:]
+        
+
+        with open(file_path, 'w') as file:
+            for i in range(len(ids)): file.write('>' + str(ids[i]) + protein_name + '___' + str(genomes[i]) + '\n')
+        file.close()
+
+        print('Your new alignement file has been created in the specified directory.')
+        
+        protein_votes_file(file_path, file_path_2)
+        
+        print('Your new votes file has been created in the specified directory.')
+
+    else: pass
+
+def cross_protein_matching_1(all_pros_file, p1_alignment_file, output_file): #### NOT TRASH BUT REMEMBER THAT THE ACCESSION NUMBERS ARE DIFFERENT, THE CORE AND E1/E2 WILL NEVER BE THE SAME
+    print('This function is used to link together 2 proteins that you want to align together.')
+    element = ' '
+    p2_list = []
+
+    while element != 'done':
+        element = input('What protein type do you want to include: Make sure to get the name exactly. ')
+        p2_list.append(element)
+
+    p2_list.pop()
+    inter_file = 'inter_file.txt'
+    key_protein_lengths(p2_list, inter_file, all_pros_file)
+
+    genomes, ids = get_genomes_from_alignment_file(p1_alignment_file)
+    p2_df = pd.read_csv(inter_file)
+    p2_ids = list((p2_df['ID']))
+    p2_seqs = p2_df['Sequence']
+
+    print(ids)
+    print(p2_ids)
+
+    combined_id = []
+
+    display_name = input('What do you want the display name to be: ')
+    
+    with open(output_file, 'w') as file2:
+        file2.write('ID,Sequence,Length')
+        for i in range(len(ids)):
+            for j in range(len(p2_ids)):
+                if (ids[i] + '.1') == (p2_ids[j]): 
+                    print('Found one!')
+                    sequence = genomes[i] + p2_seqs[j]
+                    ID = ids[i]
+                    length = len(sequence)
+                    file2.write(str(ID) + ',' + str(sequence) + ',' + str(length))
+                    file2.write('\n')
+
+def cross_protein_addition(p1_sequence, p2_key_lengths_file, output_file):
+    df = pd.read_csv(p2_key_lengths_file)
+    name = input('What is the name of your combined protein (no spaces): ')
+    for index, row in df.iterrows():
+        df.loc[index, 'Sequence'] = p1_sequence + row['Sequence']
+        df.loc[index, 'Protien_Name'] = name
+        df.loc[index, 'Length'] = len(row['Sequence'] + p1_sequence)
+    df.to_csv(output_file)
+    print('your file was created in the specified directory')
+
+def full_seq_analysis():
+    full_seq = input('What is full sequence you want to analyse: ')
+    start = int(input('What is start position you want to analyse: '))
+    end = int(input('What is end position you want to analyse: '))
+
+    print('Your request sequence is: ' + str(full_seq[start:end + 1]))
 
 
 
